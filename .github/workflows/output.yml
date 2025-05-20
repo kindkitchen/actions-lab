@@ -22,3 +22,12 @@ jobs:
         cat secrets_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)"' >> output.txt
         cat output.txt > $GITHUB_OUTPUT
 
+  display_dotenv_content:
+    runs-on: ubuntu-latest
+    needs: compute_dotenv_content
+    steps:
+      - name: Display dotenv file
+        env:
+          DOTENV_CONTENT: ${{ needs.compute_dotenv_content.outputs.dotenv_content }}
+        run: |
+          echo $DOTENV_CONTENT
