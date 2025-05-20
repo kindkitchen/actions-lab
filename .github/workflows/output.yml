@@ -8,20 +8,10 @@ jobs:
   compute_dotenv_content:
     environment: lab
     runs-on: ubuntu-latest
-    outputs:
-      dotenv_content: ${{ steps.step1.outputs.FOO }}
+    # outputs:
+    #   dotenv_content: ${{ steps.step1.outputs.FOO }}
     steps:
      - name: Prepare .env to pass via input.DOTENV_CONTENT
-       id: step1
        run: >
-        echo ${{ fromJson(toJSON(vars)) }}
-     - name: step 2
-       run: >
-        echo "${{ toJSON(vars) }}" | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' > dotenv.txt
-
-     - name: step 3
-       run: >
-        cat dotenv.txt
-
-    #  \
-    # && echo "${{ toJSON(vars) }}" | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > "$GITHUB_OUTPUT"
+        echo "${{ toJSON(vars) }}" | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > "$GITHUB_OUTPUT"
+      
