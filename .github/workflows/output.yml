@@ -14,7 +14,7 @@ jobs:
      - name: Prepare .env to pass via input.DOTENV_CONTENT
        env:
          CONTENT: ${{ toJson(vars) }}
-       run: >
+       run: |
         echo $CONTENT > content.json 
         cat content.json | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > output.txt
         cat output.txt
