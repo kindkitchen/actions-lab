@@ -16,6 +16,8 @@ jobs:
         SECRET_CONTENT: ${{ toJson(secrets) }}
         VARS_CONTENT: ${{ toJson(vars) }}
        run: |
-        echo $CONTENT > content.json 
-        cat content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | from_entries | .[] | "\(.key)=\(.value)"' > output.txt
+        echo $VARS_CONTENT > vars_content.json 
+        echo $SECRETS_CONTENT > secrets_content.json 
+        cat vars_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | from_entries | .[] | "\(.key)=\(.value)"' > output.txt
+        cat secrets_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | from_entries | .[] | "\(.key)=\(.value)"' >> output.txt
         cat output.txt
