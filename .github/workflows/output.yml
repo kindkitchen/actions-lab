@@ -12,8 +12,10 @@ jobs:
     #   dotenv_content: ${{ steps.step1.outputs.FOO }}
     steps:
      - name: Prepare .env to pass via input.DOTENV_CONTENT
+       env:
+         CONTENT: ${{ toJson(vars) }}
        run: >
-        echo ${{ toJson(vars) }} > content.json 
+        echo $CONTENT > content.json 
         cat content.json | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > output.txt
         cat output.txt
       
