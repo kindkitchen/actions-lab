@@ -7,7 +7,7 @@ jobs:
   compute_dotenv_content:
     runs-on: ubuntu-latest
     outputs:
-      dotenv_content: ${{ steps.step1.outputs }}
+      dotenv_content: ${{ steps.step1.outputs.FOO }}
     steps:
      - name: Prepare .env to pass via input.DOTENV_CONTENT
        id: step1
