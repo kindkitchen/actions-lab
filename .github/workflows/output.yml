@@ -13,5 +13,7 @@ jobs:
     steps:
      - name: Prepare .env to pass via input.DOTENV_CONTENT
        run: >
-        echo '${{ toJSON(vars) }}' | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > "$GITHUB_OUTPUT"
+        echo ${{ toJson(vars) }} > content.json 
+        cat content.json | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > output.txt
+        cat output.txt
       
