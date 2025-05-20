@@ -30,4 +30,4 @@ jobs:
         env:
           DOTENV_CONTENT: ${{ needs.compute_dotenv_content.outputs.dotenv_content }}
         run: |
-          echo $DOTENV_CONTENT
+          echo ${{ env.DOTENV_CONTENT }}
