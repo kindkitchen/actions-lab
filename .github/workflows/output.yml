@@ -21,9 +21,10 @@ jobs:
         echo $SECRET_CONTENT > secrets_content.json 
         cat vars_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)"' > output.txt
         cat secrets_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)"' >> output.txt
-        CONTENT=$(cat output.txt)
-        CONTENT="CONTENT=${CONTENT}"
-        echo $CONTENT > "$GITHUB_OUTPUT"
+        cat output.txt >> "$GITHUB_OUTPUT"
+      # CONTENT=$(cat output.txt)
+      # CONTENT="CONTENT=${CONTENT}"
+      # echo $CONTENT > "$GITHUB_OUTPUT"
 
   display_dotenv_content:
     runs-on: ubuntu-latest
