@@ -1,4 +1,4 @@
-name: Generate ouput in job
+name: Generate .env and pass it to another job
 
 on:
   push:
