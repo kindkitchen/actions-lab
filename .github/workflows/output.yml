@@ -16,6 +16,6 @@ jobs:
          CONTENT: ${{ toJson(secrets) }}
        run: |
         echo $CONTENT > content.json 
-        cat content.json | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > output.txt
+        cat content.json | jq -r 'to_entries | map(select(.key | test("A-Z_"))) | from_entries | .[] | "\(.key)=\(.value)"' > output.txt
         cat output.txt
       
