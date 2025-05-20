@@ -13,7 +13,7 @@ jobs:
      - name: Prepare .env to pass via input.DOTENV_CONTENT
        id: step1
        run: >
-        echo "${{ toJSON(vars) }}" | jq
-        && echo "${{ toJSON(vars) }}" | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' > dotenv.txt
-        && cat dotenv.txt
+        echo "${{ toJSON(vars) }}" | jq \
+        && echo "${{ toJSON(vars) }}" | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' > dotenv.txt \
+        && cat dotenv.txt \
         && echo "${{ toJSON(vars) }}" | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > "$GITHUB_OUTPUT"
