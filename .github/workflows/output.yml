@@ -8,10 +8,10 @@ jobs:
   compute_dotenv_content:
     environment: lab
     runs-on: ubuntu-latest
-    # outputs:
-    #   dotenv_content: ${{ steps.step1.outputs.FOO }}
+    outputs:
+      dotenv_content: ${{ steps.step1.outputs }}
     steps:
-     - name: Prepare .env to pass via input.DOTENV_CONTENT
+     - name: Generate dotenv file
        env:
         SECRET_CONTENT: ${{ toJson(secrets) }}
         VARS_CONTENT: ${{ toJson(vars) }}
@@ -20,4 +20,5 @@ jobs:
         echo $SECRET_CONTENT > secrets_content.json 
         cat vars_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)"' > output.txt
         cat secrets_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)"' >> output.txt
-        cat output.txt
+        cat output.txt > $GITHUB_OUTPUT
+
