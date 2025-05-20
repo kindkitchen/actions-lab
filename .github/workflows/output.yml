@@ -1,0 +1,26 @@
+name: Generate ouput in job
+
+on:
+  workflow_dispatch:
+
+jobs:
+  docker-build-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+  compute_dotenv_content:
+    runs-on: ubuntu-latest
+    outputs:
+      dotenv_content: ${{ steps.step1.outputs }}
+    steps:
+     - name: Prepare .env to pass via input.DOTENV_CONTENT
+       id: step1
+       run: >
+        echo ${{ vars }}
+        echo "${{ toJSON(vars) }}"
+        echo "${{ toJSON(vars) }}" | jq -r 'to_entries | .[] | "\(.key)=\(.value)"'
+        echo "${{ toJSON(vars) }}" | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > "$GITHUB_OUTPUT"
