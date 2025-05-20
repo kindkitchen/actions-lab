@@ -13,7 +13,7 @@ jobs:
     steps:
      - name: Prepare .env to pass via input.DOTENV_CONTENT
        env:
-         CONTENT: ${{ toJson(vars) }}
+         CONTENT: ${{ toJson(secrets) }}
        run: |
         echo $CONTENT > content.json 
         cat content.json | jq -r 'to_entries | .[] | "\(.key)=\(.value)"' > output.txt
