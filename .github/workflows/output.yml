@@ -12,6 +12,7 @@ jobs:
       dotenv_content: ${{ steps.step1.outputs }}
     steps:
      - name: Generate dotenv file
+       id: step1
        env:
         SECRET_CONTENT: ${{ toJson(secrets) }}
         VARS_CONTENT: ${{ toJson(vars) }}
