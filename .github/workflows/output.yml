@@ -18,12 +18,12 @@ jobs:
         VARS_CONTENT: ${{ toJson(vars) }}
        run: |
         echo $VARS_CONTENT > vars_content.json 
-        echo $SECRET_CONTENT > secrets_content.json 
         cat vars_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)\n"' > output.txt
         CONTENT=$(jq -Rs . < output.txt)
         echo "CONTENT=$CONTENT"
         echo "CONTENT=$CONTENT" >> "$GITHUB_OUTPUT"
         
+      # echo $SECRET_CONTENT > secrets_content.json 
       # cat secrets_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)\n"' >> output.txt
   display_dotenv_content:
     runs-on: ubuntu-latest
