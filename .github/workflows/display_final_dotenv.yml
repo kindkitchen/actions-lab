@@ -65,7 +65,7 @@ jobs:
         run: |
           cat dotenv.json | jq -r 'to_entries | map(select(.key | test("${{ inputs.REGEX_FILTER  }}"))) | from_entries' > dotenv.json
       - name: Generate override.json with absolute priority level from secrets.DOTENV_CONTENT
-        if: ${{ env.OVERRIDE_DOTENV_CONTENT != null }}
+        if: ${{ env.OVERRIDE_DOTENV_CONTENT != null && env.OVERRIDE_DOTENV_CONTENT != '' && env.OVERRIDE_DOTENV_CONTENT != 'null' }}
         run: |
           echo ${{ env.OVERRIDE_DOTENV_CONTENT }} && echo debug
           echo $OVERRIDE_DOTENV_CONTENT > override.json
