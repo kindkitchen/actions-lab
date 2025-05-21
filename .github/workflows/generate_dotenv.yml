@@ -3,46 +3,15 @@ name: Generate .env and pass it to another job
 on:
   workflow_dispatch:
     inputs:
-      dotenv_content_inputs:
-        description: >
-          The `inputs.DOTENV_CONTENT` string
-          that will be used as one of the sources to generate
-          file.
-        type: string
-        default: "\n\n\n\n\n\n\n\n"
-        required: false
-      dotenv_content_sources_priority:
-        description: >
-          The priority of content sources (on conflicts the last will override previous).
-        type: choice
-        options:
-          - "vars => secrets => inputs"
-          - "vars => inputs => secrets"
-
       input_environment:
         description: >
-          Environment from which secrets may be read.
+          Environment from which secrets will be read.
         type: environment
         required: false
-      input_environment_should_be_used:
-        description: >
-          Does environment will be used or ignore it?
-        type: boolean
-        default: true
-
 jobs:
   use_environment_and_call_display_final_dotenv:
     uses: './.github/workflows/display_final_dotenv.yml'
-    if: ${{ inputs.input_environment_should_be_used }}
     with:
       ENVIRONMENT: ${{ inputs.input_environment }}
-      DOTENV_CONTENT: ${{ inputs.dotenv_content_inputs }}
-      IS_JSON_STRING: false
-
-  ignore_environment_and_call_display_final_dotenv_var1:
-    uses: './.github/workflows/display_final_dotenv.yml'
-    if: ${{ !inputs.input_environment_should_be_used }}
-    with:
-      DOTENV_CONTENT: ${{ inputs.dotenv_content_inputs }}
-      IS_JSON_STRING: false
-    
+      DOTENV_CONTENT: ${{ toJson(vars) }}
+      IS_JSON_STRING: true
