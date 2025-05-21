@@ -1,0 +1,67 @@
+name: Merge dotenv contents
+on:
+  workflow_call:
+    secrets:
+      DOTENV_CONTENT:
+        required: false
+        description: >
+          This should be a string that represent dotenv file content.
+          It can be partial and include any sensitive data.
+          So you can use VARS.DOTENV_CONTENT to explicitly store all variables and even secret ones if you declare
+          them as example, with mock values.
+          And then simply override any match with current (github SECRETS.DOTENV_CONTENT).
+          Or you can simply use at once this secret variable as a full content or your .env file.
+    inputs:
+      DOTENV_CONTENT:
+        type: string
+        required: false
+        description: >
+          This is default dotenv content that should be used aka first low-level priority values source.
+          And on conflict with DOTENV_CONTENT from secrets it will be overridden.
+      IS_JSON_STRING:
+        type: boolean
+        default: false
+        description: >
+          By default DOTENV_CONTENT from vars is treated aka string that represent content for dotenv files.
+          But you can provide json-string, and it will be parsed to the dotenv file format.
+          Why it can be handy?
+          Because you may want to dynamically accumulate all declared variables in vars (github VARS).
+          But it is not possible to call another workflow without explicitly declare variables names.
+          So workaround solution will be to send $\{{ toJson(vars) }}... and it still not working because it should be string.
+          So up to you how to convert the line above to a string but yes, it will be json-string that wil be contain all variables in flat object.
+      REGEX_FILTER:
+        type: string
+        required: false
+        description: >
+          If provided - will skip any variables that will not match regex.
+
+jobs:
+  merge_contents:
+    runs-on: ubuntu-latest
+    env:
+      OVERRIDE_DOTENV_CONTENT: ${{ toJson(secrets.DOTENV_CONTENT) }}
+    steps:
+      - name: Write 1st low-level priority content into dotenv.json (from json-string in vars.DOTENV_CONTENT)
+        if: inputs.DOTENV_CONTENT && inputs.IS_JSON_STRING
+        run: |
+          echo ${{ inputs.DOTENV_CONTENT }} > dotenv.json
+      - name: Write 1st low-level priority content into dotenv.json (parsing string from vars.DOTENV_CONTENT)
+        if: inputs.DOTENV_CONTENT && !inputs.IS_JSON_STRING
+        run: |
+          echo ${{ toJson(inputs.DOTENV_CONTENT) }} > dotenv.json
+      - name: Filter keys
+        if: inputs.REGEX_FILTER
+        run: |
+          cat dotenv.json | jq -r 'to_entries | map(select(.key | test("${{ inputs.REGEX_FILTER  }}"))) | from_entries' > dotenv.json
+      - name: Generate override.json with absolute priority level from secrets.DOTENV_CONTENT
+        if: env.OVERRIDE_DOTENV_CONTENT
+        run: |
+          echo $OVERRIDE_DOTENV_CONTENT > override.json
+          jq -s add dotenv.json override.json > dotenv.json
+      - name: Convert json data into dotenv file
+        run: |
+          cat dotenv.json | jq -r 'to_entries | "\(.key)=\(.value | @json)"' > dotenv.txt
+      - name: Done
+        run: |
+          echo "TODO: this is not completed task and echo used only for development purposes"
+          cat dotenv.txt
