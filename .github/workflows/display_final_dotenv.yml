@@ -69,6 +69,7 @@ jobs:
           jq -s add dotenv.json override.json > dotenv.json
       - name: Convert json data into dotenv file
         run: |
+          cat dotenv.json
           cat dotenv.json | jq -r 'to_entries | "\(.key)=\(.value | @json)"' > dotenv.txt
       - name: Done
         run: |
