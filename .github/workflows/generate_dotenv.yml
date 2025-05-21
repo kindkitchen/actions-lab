@@ -13,38 +13,12 @@ on:
           - baz
       input_environment:
         description: >
-          Environment input
+          Environment from which secrets may be read
         type: environment
+        required: false
 
 jobs:
   call_display_final_dotenv:
     uses: './.github/workflows/display_final_dotenv.yml'
     with:
       ENVIRONMENT: ${{ inputs.input_environment }}
-      
-  compute_dotenv_content_from_vars:
-    environment: lab
-    runs-on: ubuntu-latest
-    outputs:
-      DOTENV_CONTENT_FROM_VARS: ${{ steps.step1.outputs.DOTENV_CONTENT_FROM_VARS }}
-    steps:
-      - name: Generate dotenv file
-        id: step1
-        env:
-          VARS_CONTENT: ${{ toJson(vars) }}
-        run: |
-          echo $VARS_CONTENT > vars_content.json
-          cat vars_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)\n"' > output.txt
-          CONTENT=$(jq -Rs . < output.txt)
-          echo "DOTENV_CONTENT_FROM_VARS=$CONTENT"
-          echo "DOTENV_CONTENT_FROM_VARS=$CONTENT" >> "$GITHUB_OUTPUT"
-
-  prepare_input_to_next_job_with_both_vars_dotenv_content_and_override_from_secrets:
-    runs-on: ubuntu-latest
-    needs: compute_dotenv_content_from_vars
-    steps:
-      - name: Display dotenv file
-        env:
-          DOTENV_CONTENT_FROM_VARS: ${{ needs.compute_dotenv_content_from_vars.outputS.DOTENV_CONTENT_FROM_VARS }}
-        run: |
-          echo $DOTENV_CONTENT_FROM_VARS

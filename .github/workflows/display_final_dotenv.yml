@@ -1,16 +1,6 @@
 name: Merge dotenv contents
 on:
   workflow_call:
-    secrets:
-      DOTENV_CONTENT:
-        required: false
-        description: >
-          This should be a string that represent dotenv file content.
-          It can be partial and include any sensitive data.
-          So you can use VARS.DOTENV_CONTENT to explicitly store all variables and even secret ones if you declare
-          them as example, with mock values.
-          And then simply override any match with current (github SECRETS.DOTENV_CONTENT).
-          Or you can simply use at once this secret variable as a full content or your .env file.
     inputs:
       ENVIRONMENT:
         description: The github environment from which vars and secrets may be used
@@ -38,6 +28,17 @@ on:
         required: false
         description: >
           If provided - will skip any variables that will not match regex.
+
+    secrets:
+      DOTENV_CONTENT:
+        required: false
+        description: >
+          This should be a string that represent dotenv file content.
+          It can be partial and include any sensitive data.
+          So you can use VARS.DOTENV_CONTENT to explicitly store all variables and even secret ones if you declare
+          them as example, with mock values.
+          And then simply override any match with current (github SECRETS.DOTENV_CONTENT).
+          Or you can simply use at once this secret variable as a full content or your .env file.
 
 jobs:
   merge_contents:
