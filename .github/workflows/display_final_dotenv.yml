@@ -1,4 +1,4 @@
-name: Merge dotenv contents
+# name: Merge dotenv contents
 on:
   workflow_call:
     inputs:
