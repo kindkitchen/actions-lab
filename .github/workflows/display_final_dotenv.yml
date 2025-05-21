@@ -12,6 +12,10 @@ on:
           And then simply override any match with current (github SECRETS.DOTENV_CONTENT).
           Or you can simply use at once this secret variable as a full content or your .env file.
     inputs:
+      ENVIRONMENT:
+        description: The github environment from which vars and secrets may be used
+        required: false
+        type: string
       DOTENV_CONTENT:
         type: string
         required: false
@@ -38,6 +42,7 @@ on:
 jobs:
   merge_contents:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.ENVIRONMENT }}
     env:
       OVERRIDE_DOTENV_CONTENT: ${{ toJson(secrets.DOTENV_CONTENT) }}
     steps:

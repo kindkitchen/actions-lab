@@ -20,7 +20,7 @@ jobs:
   call_display_final_dotenv:
     uses: './.github/workflows/display_final_dotenv.yml'
     with:
-      DOTENV_CONTENT: ${{ inputs.input_environment }}
+      ENVIRONMENT: ${{ inputs.input_environment }}
       
   compute_dotenv_content_from_vars:
     environment: lab

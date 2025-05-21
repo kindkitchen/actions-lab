@@ -1,4 +1,4 @@
 run:
 	git add -A
 	git commit -m "attempt"
-	git push origin dev
+	git push origin main
