@@ -54,7 +54,7 @@ jobs:
           cat dotenv.json && echo debug
           cat override.json && echo debug
       - name: Write 1st low-level priority content into dotenv.json (from json-string in vars.DOTENV_CONTENT)
-        if: ${{ inputs.DOTENV_CONTENT && inputs.IS_JSON_STRING }}
+        if: ${{ inputs.DOTENV_CONTENT && inputs.IS_JSON_STRING && contains(inputs.DOTENV_CONTENT, ':') }}
         run: |
           echo ${{ inputs.DOTENV_CONTENT }} >> dotenv.json
       - name: Write 1st low-level priority content into dotenv.json (parsing string from vars.DOTENV_CONTENT)
