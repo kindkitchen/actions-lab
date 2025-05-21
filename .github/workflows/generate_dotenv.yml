@@ -14,4 +14,4 @@ jobs:
     with:
       ENVIRONMENT: ${{ inputs.input_environment }}
       DOTENV_CONTENT: ${{ toJson(vars) }}
-      IS_JSON_STRING: true
+      IS_JSON_STRING: true  
