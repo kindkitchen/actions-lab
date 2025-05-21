@@ -51,19 +51,19 @@ jobs:
           touch dotenv.json
           touch override.json
       - name: Write 1st low-level priority content into dotenv.json (from json-string in vars.DOTENV_CONTENT)
-        if: inputs.DOTENV_CONTENT && inputs.IS_JSON_STRING
+        if: ${{ inputs.DOTENV_CONTENT && inputs.IS_JSON_STRING }}
         run: |
           echo ${{ inputs.DOTENV_CONTENT }} >> dotenv.json
       - name: Write 1st low-level priority content into dotenv.json (parsing string from vars.DOTENV_CONTENT)
-        if: inputs.DOTENV_CONTENT && !inputs.IS_JSON_STRING
+        if: ${{ inputs.DOTENV_CONTENT && !inputs.IS_JSON_STRING }}
         run: |
           echo ${{ toJson(inputs.DOTENV_CONTENT) }} >> dotenv.json
       - name: Filter keys
-        if: inputs.REGEX_FILTER
+        if: ${{ inputs.REGEX_FILTER }}
         run: |
           cat dotenv.json | jq -r 'to_entries | map(select(.key | test("${{ inputs.REGEX_FILTER  }}"))) | from_entries' > dotenv.json
       - name: Generate override.json with absolute priority level from secrets.DOTENV_CONTENT
-        if: env.OVERRIDE_DOTENV_CONTENT
+        if: ${{ env.OVERRIDE_DOTENV_CONTENT }}
         run: |
           echo $OVERRIDE_DOTENV_CONTENT > override.json
           jq -s add dotenv.json override.json > dotenv.json
