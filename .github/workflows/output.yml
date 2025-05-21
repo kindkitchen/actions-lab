@@ -20,7 +20,7 @@ jobs:
         echo $VARS_CONTENT > vars_content.json 
         echo $SECRET_CONTENT > secrets_content.json 
         cat vars_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)"' > output.txt
-        cat secrets_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)"' >> output.txt
+        cat secrets_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)\n"' >> output.txt
         CONTENT=$(cat output.txt)
         CONTENT="CONTENT=$CONTENT"
         echo $CONTENT
@@ -35,3 +35,4 @@ jobs:
           DOTENV_CONTENT: ${{ needs.compute_dotenv_content.outputs.dotenv_content }}
         run: |
           echo ${{ env.DOTENV_CONTENT }}
+          echo $DOTENV_CONTENT
