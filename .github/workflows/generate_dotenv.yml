@@ -15,10 +15,15 @@ on:
         description: >
           Environment from which secrets may be read
         type: environment
-        required: false
+      input_environment_should_be_used:
+        description: >
+          Does environment will be used or ignore it?
+        type: boolean
+        required: true
 
 jobs:
   call_display_final_dotenv:
     uses: './.github/workflows/display_final_dotenv.yml'
+    if: false
     with:
       ENVIRONMENT: ${{ inputs.input_environment }}
