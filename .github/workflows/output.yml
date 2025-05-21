@@ -21,8 +21,7 @@ jobs:
         echo $SECRET_CONTENT > secrets_content.json 
         cat vars_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)\n"' > output.txt
         cat secrets_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)\n"' >> output.txt
-        CONTENT=$(cat output.txt | jq -r '@json')
-        echo $CONTENT
+        CONTENT=$(jq -Rs . < output.txt)
         echo "CONTENT=$CONTENT"
         echo "CONTENT=$CONTENT" >> "$GITHUB_OUTPUT"
 
