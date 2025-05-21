@@ -9,7 +9,7 @@ jobs:
     environment: lab
     runs-on: ubuntu-latest
     outputs:
-      dotenv_content: ${{ steps.step1.outputs }}
+      dotenv_content: ${{ steps.step1.outputs.CONTENT }}
     steps:
      - name: Generate dotenv file
        id: step1
@@ -21,10 +21,10 @@ jobs:
         echo $SECRET_CONTENT > secrets_content.json 
         cat vars_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)"' > output.txt
         cat secrets_content.json | jq -r 'to_entries | map(select(.key | test("[A-Z_]+"))) | .[] | "\(.key)=\(.value | @json)"' >> output.txt
-        cat output.txt >> "$GITHUB_OUTPUT"
-      # CONTENT=$(cat output.txt)
-      # CONTENT="CONTENT=${CONTENT}"
-      # echo $CONTENT > "$GITHUB_OUTPUT"
+        CONTENT=$(cat output.txt)
+        CONTENT="CONTENT=$CONTENT"
+        echo $CONTENT
+        echo $CONTENT >> "$GITHUB_OUTPUT"
 
   display_dotenv_content:
     runs-on: ubuntu-latest
