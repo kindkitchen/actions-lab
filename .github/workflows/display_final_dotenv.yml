@@ -50,6 +50,8 @@ jobs:
         run: |
           touch dotenv.json
           touch override.json
+          echo dotenv.json
+          echo override.json
       - name: Write 1st low-level priority content into dotenv.json (from json-string in vars.DOTENV_CONTENT)
         if: ${{ inputs.DOTENV_CONTENT && inputs.IS_JSON_STRING }}
         run: |
