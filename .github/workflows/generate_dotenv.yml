@@ -9,6 +9,7 @@ on:
           that will be used as one of the sources to generate
           file.
         type: string
+        default: "\n\n\n\n\n\n\n\n"
         required: false
       dotenv_content_sources_priority:
         description: >
