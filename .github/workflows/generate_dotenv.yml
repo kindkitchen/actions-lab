@@ -22,13 +22,13 @@ on:
         required: true
 
 jobs:
-  call_display_final_dotenv_var0:
+  use_environment_and_call_display_final_dotenv:
     uses: './.github/workflows/display_final_dotenv.yml'
     if: ${{ inputs.input_environment_should_be_used }}
     with:
       ENVIRONMENT: ${{ inputs.input_environment }}
 
-  call_display_final_dotenv_var1:
+  ignore_environment_and_call_display_final_dotenv_var1:
     uses: './.github/workflows/display_final_dotenv.yml'
     if: ${{ !inputs.input_environment_should_be_used }}
     
