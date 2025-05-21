@@ -1,10 +1,27 @@
 name: Generate .env and pass it to another job
 
 on:
-  push:
   workflow_dispatch:
+    inputs:
+      input_choice:
+        description: >
+          Choice input
+        type: choice
+        options:
+          - foo
+          - bar
+          - baz
+      input_environment:
+        description: >
+          Environment input
+        type: environment
 
 jobs:
+  call_display_final_dotenv:
+    uses: './.github/workflows/display_final_dotenv.yml'
+    with:
+      DOTENV_CONTENT: ${{ inputs.input_environment }}
+      
   compute_dotenv_content_from_vars:
     environment: lab
     runs-on: ubuntu-latest
