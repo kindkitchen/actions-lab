@@ -3,7 +3,6 @@ name: 'Project redeployment'
 on:
   push:
   workflow_dispatch:
-    branches: [dev]
     inputs:
       environment:
         type: environment
@@ -35,6 +34,8 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DIGITALOCEAN_SSH_PRIVATE_KEY: ${{ secrets.DIGITALOCEAN_SSH_PRIVATE_KEY }}
     steps:      
+      - if: github.base_ref != 'wtf'
+        run: echo ${{ github.base_ref }}
       - env:
           VARS: ${{ toJson(vars) }}
         run: echo $VARS | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"' > dotenv.txt
