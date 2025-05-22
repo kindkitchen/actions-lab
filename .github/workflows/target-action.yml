@@ -33,12 +33,8 @@ jobs:
       DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DIGITALOCEAN_SSH_PRIVATE_KEY: ${{ secrets.DIGITALOCEAN_SSH_PRIVATE_KEY }}
-    steps:
-      - run: echo debug && echo "${{ inputs.environment }}"
-      
-      - run: echo debug && echo "${{ toJson(vars) }}"
-        env:
-          VARS: ${{ toJson(vars) }}
+    steps:      
+      - run: echo debug && echo "${{ toJson(vars) }}" | jq -r 'to_entries'
       - name: Just did it!
         run: echo Done!
 
