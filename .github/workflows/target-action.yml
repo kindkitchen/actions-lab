@@ -42,6 +42,7 @@ jobs:
         run: echo $SECRETS | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"' >> dotenv.txt
       - run: echo "FILE_NAME=dotenv.$(date +%Y-%m-%dT%H:%M:%S).txt" >> $GITHUB_ENV
       - run: cp dotenv.txt $FILE_NAME
+      - run: cat $FILE_NAME
       - uses: actions/upload-artifact@v4
         env:
           FILE_NAME: echo $FILE_NAME
