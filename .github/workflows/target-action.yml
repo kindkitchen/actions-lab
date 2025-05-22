@@ -41,7 +41,12 @@ jobs:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
 
     steps:     
-      - run: echo ${{ toJson(vars) }}
+      - run: echo $X
+        env:
+          X: ${{ toJson(vars) }}
+      - run: echo $X
+        env:
+          X: ${{ inputs.VARS}}
       - run: echo ${{ inputs.VARS }}
       - run: echo ${{ toJson(github.event.pull_request.head.ref) }}
       - if: env.BRANCH_NAME != 'main' && env.BRANCH_NAME != 'stage' && env.BRANCH_NAME != 'dev'
