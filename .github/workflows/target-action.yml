@@ -34,14 +34,18 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DIGITALOCEAN_SSH_PRIVATE_KEY: ${{ secrets.DIGITALOCEAN_SSH_PRIVATE_KEY }}
     steps:      
-      - 
-        env:
+      - env:
           VARS: ${{ toJson(vars) }}
         run: echo $VARS | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"' > dotenv.txt
-      - 
-        env:
+      - env:
           SECRETS: ${{ toJson(secrets) }}
         run: echo $SECRETS | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"' >> dotenv.txt
-      -
-        run: cat dotenv.txt
+      - run: cat dotenv.txt
+      - run: echo "FILE_NAME=dotenv.$(date +%Y-%m-%dT%H:%M:%S).txt" >> $GITHUB_ENV
+      - uses: actions/upload-artifact@v4
+        env:
+          FILENAME: echo $FILENAME
+        with:
+          path: ${{ env.FILENAME }}
+          overwrite: true
 
