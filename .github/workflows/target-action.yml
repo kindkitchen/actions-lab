@@ -33,9 +33,14 @@ jobs:
       DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DIGITALOCEAN_SSH_PRIVATE_KEY: ${{ secrets.DIGITALOCEAN_SSH_PRIVATE_KEY }}
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
+
     steps:      
-      - if: github.base_ref != 'wtf'
-        run: echo ${{ github.base_ref }}
+      - if: env.BRANCH_NAME != 'master' || env.BRANCH_NAME != 'stage' || env.BRANCH_NAME != 'dev'
+        run: |
+          echo "$BRANCH_NAME should not be used in this workflow!"
+          exit 1
+
       - env:
           VARS: ${{ toJson(vars) }}
         run: echo $VARS | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"' > dotenv.txt
