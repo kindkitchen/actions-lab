@@ -1,10 +1,34 @@
 name: 'Project redeployment'
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        description: The environment of the workflow.
+      
+  workflow_call:
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+        description: | 
+          The username from dockerhub.
+      DOCKERHUB_PASSWORD:
+        required: true
+        description: | 
+          The password from dockerhub.
+      DIGITALOCEAN_SSH_PRIVATE_KEY:
+        required: true
+        description: |
+          The ssh private key to connect to digital ocean droplet.
+          (the public key should be already stored on droplet ~/.ssh/authorized_keys)         
 
 jobs:
   do:
     runs-on: ubuntu-latest
+    env:
+      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DIGITALOCEAN_SSH_PRIVATE_KEY: ${{ secrets.DIGITALOCEAN_SSH_PRIVATE_KEY }}
     steps:
       - name: Just do it!
         run: |
