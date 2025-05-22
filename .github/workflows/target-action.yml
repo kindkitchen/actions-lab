@@ -34,7 +34,7 @@ jobs:
     steps:
       - run: echo debug && echo "${{ inputs.environment }}"
       
-      - run: echo debug && echo $VARS
+      - run: echo debug && echo ${{ env.VARS }}
         env:
           VARS: ${{ toJson(vars) }}
       - name: Just did it!
