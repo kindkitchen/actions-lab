@@ -3,6 +3,7 @@ name: 'Project redeployment'
 on:
   push:
   workflow_dispatch:
+    branches: [dev]
     inputs:
       environment:
         type: environment
