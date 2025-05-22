@@ -76,7 +76,7 @@ jobs:
       - name: Convert json data into dotenv file
         run: |
           cat dotenv.json && echo debug
-          cat dotenv.json | jq -r 'to_entries | map(.key, .value) | "\(.key)=\(.value | @json)"' > dotenv.txt
+          cat dotenv.json | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"' > dotenv.txt
       - name: Done
         run: |
           echo "TODO: this is not completed task and echo used only for development purposes"
