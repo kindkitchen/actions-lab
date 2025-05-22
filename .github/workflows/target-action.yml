@@ -33,7 +33,10 @@ jobs:
       DIGITALOCEAN_SSH_PRIVATE_KEY: ${{ secrets.DIGITALOCEAN_SSH_PRIVATE_KEY }}
     steps:
       - run: echo debug && echo "${{ inputs.environment }}"
-      - run: echo debug && echo "${{ toJson(vars) }}""
+      
+      - run: echo debug && echo $VARS
+        env:
+          VARS: ${{ toJson(vars) }}
       - name: Just did it!
         run: echo Done!
 
