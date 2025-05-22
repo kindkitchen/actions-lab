@@ -5,6 +5,7 @@ on:
       environment:
         type: environment
         description: The environment of the workflow.
+        required: true
       
   workflow_call:
     secrets:
@@ -23,14 +24,16 @@ on:
           (the public key should be already stored on droplet ~/.ssh/authorized_keys)         
 
 jobs:
-  do:
+  just_do_it:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     env:
       DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DIGITALOCEAN_SSH_PRIVATE_KEY: ${{ secrets.DIGITALOCEAN_SSH_PRIVATE_KEY }}
     steps:
       - run: echo debug && echo "${{ inputs.environment }}"
-      - name: Just do it!
-        run: |
-          echo Done!
+      - run: echo debug $$ echo "${{ toJson(vars) }}""
+      - name: Just did it!
+        run: echo Done!
+
