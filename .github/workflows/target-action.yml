@@ -40,12 +40,12 @@ jobs:
       - env:
           SECRETS: ${{ toJson(secrets) }}
         run: echo $SECRETS | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"' >> dotenv.txt
-      - run: cat dotenv.txt
       - run: echo "FILE_NAME=dotenv.$(date +%Y-%m-%dT%H:%M:%S).txt" >> $GITHUB_ENV
+      - run: cp dotenv.txt $FILE_NAME
       - uses: actions/upload-artifact@v4
         env:
-          FILENAME: echo $FILENAME
+          FILE_NAME: echo $FILE_NAME
         with:
-          path: ${{ env.FILENAME }}
+          path: ${{ env.FILE_NAME }}
           overwrite: true
 
