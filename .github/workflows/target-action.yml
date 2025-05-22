@@ -30,6 +30,7 @@ jobs:
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       DIGITALOCEAN_SSH_PRIVATE_KEY: ${{ secrets.DIGITALOCEAN_SSH_PRIVATE_KEY }}
     steps:
+      - run: echo debug && echo "${{ inputs.environment }}"
       - name: Just do it!
         run: |
           echo Done!
