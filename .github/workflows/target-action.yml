@@ -33,7 +33,7 @@ on:
 jobs:
   just_do_it:
     runs-on: ubuntu-latest
-    environment: wtf
+    environment: lab
     env:
       DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
