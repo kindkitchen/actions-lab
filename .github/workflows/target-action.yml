@@ -36,8 +36,12 @@ jobs:
     steps:      
       - 
         env:
-          X: ${{ toJson(vars) }}
-        run: echo $X | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"'
-      - name: Just did it!
-        run: echo Done!
+          VARS: ${{ toJson(vars) }}
+        run: echo $VARS | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"' > dotenv.txt
+      - 
+        env:
+          SECRETS: ${{ toJson(secrets) }}
+        run: echo $SECRETS | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"' >> dotenv.txt
+      -
+        run: cat dotenv.txt
 
