@@ -2,7 +2,7 @@ on:
   push:
 jobs:
   dispatch:
-    uses: ./.github/workflows/target.action.yml
+    uses: ./.github/workflows/target-action.yml
     with:
       VARS: ${{ toJson(vars) }}
     secrets:
