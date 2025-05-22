@@ -47,7 +47,6 @@ jobs:
       - run: echo $X
         env:
           X: ${{ inputs.VARS}}
-      - run: echo ${{ inputs.VARS }}
       - run: echo ${{ toJson(github.event.pull_request.head.ref) }}
       - if: env.BRANCH_NAME != 'main' && env.BRANCH_NAME != 'stage' && env.BRANCH_NAME != 'dev'
         run: |
