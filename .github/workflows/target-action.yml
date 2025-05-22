@@ -1,0 +1,11 @@
+name: 'Project redeployment'
+on:
+  workflow_dispatch:
+
+jobs:
+  do:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Just do it!
+        run: |
+          echo Done!
