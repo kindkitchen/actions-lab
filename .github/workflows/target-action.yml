@@ -40,7 +40,7 @@ jobs:
       - env:
           SECRETS: ${{ toJson(secrets) }}
         run: echo $SECRETS | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"' >> dotenv.txt
-      - run: echo "FILE_NAME=dotenv.$(date +%Y-%m-%dT%H:%M:%S).txt" >> $GITHUB_ENV
+      - run: echo "FILE_NAME=dotenv.$(date +%Y_%m_%d_%H_%M_%S).txt" >> $GITHUB_ENV
       - run: cp dotenv.txt $FILE_NAME
       - id: save_file_name
         run: echo FILE_NAME=$FILE_NAME >> $GITHUB_OUTPUT
