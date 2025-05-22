@@ -28,7 +28,7 @@ on:
 jobs:
   just_do_it:
     runs-on: ubuntu-latest
-    environment: ${{ fromJson('[null, "lab"]')[inputs.environment] || inputs.environment }}
+    environment: ${{ fromJson('["lab", null]')[inputs.environment] || inputs.environment }}
     env:
       DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
       DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
