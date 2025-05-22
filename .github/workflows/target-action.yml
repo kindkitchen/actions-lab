@@ -36,7 +36,7 @@ jobs:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
 
     steps:      
-      - if: env.BRANCH_NAME != 'main' || env.BRANCH_NAME != 'stage' || env.BRANCH_NAME != 'dev'
+      - if: env.BRANCH_NAME != 'main' && env.BRANCH_NAME != 'stage' && env.BRANCH_NAME != 'dev'
         run: |
           echo "$BRANCH_NAME should not be used in this workflow!"
           exit 1
