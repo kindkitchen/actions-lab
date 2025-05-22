@@ -37,7 +37,7 @@ jobs:
       - 
         env:
           X: ${{ toJson(vars) }}
-        run: echo $X | jq -r 'to_entries'
+        run: echo $X | jq -r 'to_entries | map(select(.key, .value)) | "\(.key)=\(.value)"'
       - name: Just did it!
         run: echo Done!
 
