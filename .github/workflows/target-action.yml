@@ -28,8 +28,8 @@ jobs:
       inputsVARS: ${{ inputs.VARS }}
     steps:     
       - run: |
-          echo ${{ env.env_toJson_vars }}
-          echo ${{ env.secretsSECRETS }}
-          echo ${{ env.inputsVARS }}
+          echo "${{ env.env_toJson_vars }}"
+          echo "${{ env.secretsSECRETS }}"
+          echo "${{ env.inputsVARS }}"
         env:
           env_toJson_vars: ${{ toJson(vars) }}
