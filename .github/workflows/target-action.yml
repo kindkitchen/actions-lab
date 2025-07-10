@@ -16,55 +16,20 @@ on:
         type: string
         required: false
     secrets:
-      DOCKERHUB_USERNAME:
-        required: true
-        description: | 
-          The username from dockerhub.
-      DOCKERHUB_PASSWORD:
-        required: true
-        description: | 
-          The password from dockerhub.
-      DIGITALOCEAN_SSH_PRIVATE_KEY:
-        required: true
-        description: |
-          The ssh private key to connect to digital ocean droplet.
-          (the public key should be already stored on droplet ~/.ssh/authorized_keys)         
+      SECRETS:
+        required: false
 
 jobs:
   just_do_it:
     runs-on: ubuntu-latest
     environment: lab
     env:
-      DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-      DIGITALOCEAN_SSH_PRIVATE_KEY: ${{ secrets.DIGITALOCEAN_SSH_PRIVATE_KEY }}
-      BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
-
+      secretsSECRETS: ${{ secrets.SECRETS }}
+      inputsVARS: ${{ inputs.VARS }}
     steps:     
-      - run: echo $X
+      - run: |
+          echo ${{ env.env_toJson_vars }}
+          echo ${{ env.secretsSECRETS }}
+          echo ${{ env.inputsVARS }}
         env:
-          X: ${{ toJson(vars) }}
-      - run: echo $X
-        env:
-          X: ${{ inputs.VARS}}
-      - run: echo ${{ toJson(github.event.pull_request.head.ref) }}
-      - if: env.BRANCH_NAME != 'main' && env.BRANCH_NAME != 'stage' && env.BRANCH_NAME != 'dev'
-        run: |
-          echo "$BRANCH_NAME should not be used in this workflow!"
-          exit 1
-
-      - env:
-          VARS: ${{ toJson(vars) }}
-        run: echo $VARS | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"' > dotenv.txt
-      - env:
-          SECRETS: ${{ toJson(secrets) }}
-        run: echo $SECRETS | jq -r 'to_entries | .[] | "\(.key)=\(.value | @json)"' >> dotenv.txt
-      - run: echo "FILE_NAME=dotenv.$(date +%Y_%m_%d_%H_%M_%S).txt" >> $GITHUB_ENV
-      - run: cp dotenv.txt $FILE_NAME
-      - id: save_file_name
-        run: echo FILE_NAME=$FILE_NAME >> $GITHUB_OUTPUT
-      - uses: actions/upload-artifact@v4
-        with:
-          path: ${{ steps.save_file_name.outputs.FILE_NAME }}
-          overwrite: true
-
+          env_toJson_vars: ${{ toJson(vars) }}

@@ -6,6 +6,4 @@ jobs:
     with:
       VARS: ${{ toJson(vars) }}
     secrets:
-      DOCKERHUB_USERNAME: DOCKERHUB_USERNAME
-      DOCKERHUB_PASSWORD: DOCKERHUB_PASSWORD
-      DIGITALOCEAN_SSH_PRIVATE_KEY: DIGITALOCEAN_SSH_PRIVATE_KEY
+      SECRETS: ${{ toJson(secrets) }}
